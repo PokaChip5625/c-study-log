@@ -11,6 +11,20 @@
 return x;
 }
 }
+char inputchar() {
+    char p;
+    while (1) {
+        printf("연산 선택 (+,-,*,/): ");
+     scanf(" %c", &p);
+        if (p == '+' || p == '-' || p == '*' || p == '/' ) {
+            return p;
+        } else {
+            printf("please input +, -, *, /.\n");
+
+        }
+        } 
+    }
+
   int calc(int a, int b, char op) {
 switch (op) {
     case '+' : return a + b;
@@ -36,8 +50,7 @@ int main() {
     a = inputint();
     printf("두 번째 정수: ");
     b = inputint();
-    printf("연산 선택 (+,-,*,/): ");
-    scanf(" %c", &op);
+    op = inputchar();
     int result = calc(a, b, op);
     printf("결과: %d\n", result);
     return 0;
