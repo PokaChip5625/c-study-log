@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 struct player {
     int x, y;
     int hp;
@@ -24,7 +25,7 @@ int main() {
     p.y = 0;
     map[p.x][p.y] = 2;
     map[1][1] = 1; 
-map[2][2] = 1;
+map[2][2] = 7;
 map[3][3] = 1;
 map[5][5] = 3;
 map[0][5] = 4;
@@ -36,6 +37,8 @@ map[5][2] = 6;
         printf("현재 HP: %d, GOLD: %d, 포션 %d개\n", p.hp, p.gold, p.inventory[0]);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j ++) {
+                       int dist = abs(p.x - i) + abs(p.y - j);
+                         if (dist <= 2) {
                 if (map[i][j] == 2) {
                     printf("%c ", p.icon);
                 } else if (map[i][j] == 1) {
@@ -48,11 +51,18 @@ map[5][2] = 6;
                     printf("G ");
                 } else if (map[i][j] == 6) {
                     printf("P ");
+                } else if (map[i][j] == 7) {
+                    printf("S ");
                 }
                 else {
                     printf(". ");
                 }
             }
+                else {
+                    printf("? ");
+                }
+            
+        }
         printf("\n");
         }
         printf("이동 방법(w,a,s,d): ");
@@ -95,7 +105,8 @@ else if (target == 3) {
     return 0;
 } 
 else if (target == 4) {
-    printf("몬스터에게 마주했습니다!\n");
+    printf("몬스터에게 마주쳤습니다!\n");
+    printf("전투 시작!\n");
     s.hp -=p.attack;
     printf("몬스터 체력: %d\n", s.hp);
 if (s.alive == 1 && s.hp <= 0) {
@@ -121,6 +132,34 @@ if (s.alive == 1 && s.hp <= 0) {
     } else {
         printf("가방이 가득 찼습니다!\n");
     }
+} else if (target == 7) {
+    int choice = 0;
+   
+    printf("상점에 도착했습니다. 현재 내 골드: %d\n", p.gold);
+     while (choice != 3) {
+printf("1. 포션 구매, 2. 무기 강화 3. 나가기 [숫자 입력]: \n");
+int bug = scanf(" %d", &choice);
+if (bug == 0) {
+    printf("알맞은 숫자를 입력해라.\n");
+    while (getchar() != '\n');
+    continue;
+}
+if (choice == 1 && p.gold >= 50) {
+p.inventory[0]++;
+p.gold -= 50;
+printf("흔한 포션 1개 구입.\n");
+} else if (choice == 1 && p.gold <= 49) {
+    printf("골드가 %d 부족하다.\n", 50 - p.gold);
+}
+else if (choice == 2 && p.gold >= 100) {
+    p.attack += 10;
+    printf("공격력 10 상승!\n");
+} else if (choice == 2 && p.gold <= 100) {
+    printf("골드가 %d 부족하다.\n", 100 - p.gold);
+}
+else if (choice == 3) {
+}
+}
 }
 else {
     map[p.x][p.y] = 0;
